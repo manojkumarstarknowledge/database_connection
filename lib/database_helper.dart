@@ -30,7 +30,7 @@ class DatabaseHelper {
     return _myDatabase!;
   }
 
-  // 1. CREATE (Insert)
+  // CREATE (Insert)
   Future<void> insertUser(UserModel user) async {
     Database db = await getDatabaseConnection();
     await db.insert(
@@ -40,7 +40,7 @@ class DatabaseHelper {
     );
   }
 
-  // 2. READ ALL (Fetch)
+  // READ ALL (Fetch)
   Future<List<UserModel>> getAllUsers() async {
     Database db = await getDatabaseConnection();
     List<Map<String, dynamic>> rawDataList = await db.query('users');
@@ -52,7 +52,7 @@ class DatabaseHelper {
     return userObjectsList;
   }
 
-  // 3. READ SINGLE (Login Authentication)
+  // READ SINGLE (Login Authentication)
   Future<UserModel?> checkLoginCredentials(String email, String password) async {
     Database db = await getDatabaseConnection();
     List<Map<String, dynamic>> matchingRows = await db.query(
@@ -67,7 +67,7 @@ class DatabaseHelper {
     return null;
   }
 
-  // 4. UPDATE
+  // UPDATE
   Future<void> updateUserRecord(UserModel user) async {
     Database db = await getDatabaseConnection();
     await db.update(
@@ -78,7 +78,7 @@ class DatabaseHelper {
     );
   }
 
-  // 5. DELETE
+  // DELETE
   Future<void> deleteUserRecord(String id) async {
     Database db = await getDatabaseConnection();
     await db.delete(

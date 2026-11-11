@@ -53,7 +53,6 @@ class RegisterScreen extends StatelessWidget {
                   ),
                   onPressed: () async {
                     if (formKey.currentState!.validate()) {
-                      // FIX: Added .trim() to controllers to save data cleanly without hidden spaces
                       final newUser = UserModel(
                         id: DateTime.now().millisecondsSinceEpoch.toString(),
                         name: nameController.text.trim(),
