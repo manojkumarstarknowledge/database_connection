@@ -3,19 +3,22 @@ import 'package:sqflite/sqflite.dart';
 import 'user_model.dart';
 
 class DatabaseHelper {
-  static Database? _myDatabase;
+  static Database? database;
 
   Future<Database> getDatabaseConnection() async {
-    if (_myDatabase != null) {
-      return _myDatabase!;
+
+    if (database != null) {
+      return database!;
     }
 
-    String databaseFolderPath = await getDatabasesPath();
-    String databaseFilePath = join(databaseFolderPath, 'user_database.db');
+    final databasePath = await getDatabasesPath();
 
-    _myDatabase = await openDatabase(
-      databaseFilePath,
+    final databaseFile = join(databasePath, 'user_database.db');
+
+    database = await openDatabase(
+      databaseFile,
       version: 1,
+      
       onCreate: (db, version) async {
         await db.execute('''
           CREATE TABLE users (
@@ -27,12 +30,13 @@ class DatabaseHelper {
         ''');
       },
     );
-    return _myDatabase!;
+
+    return database!;
   }
 
-  // CREATE (Insert)
   Future<void> insertUser(UserModel user) async {
-    Database db = await getDatabaseConnection();
+    final db = await getDatabaseConnection();
+
     await db.insert(
       'users',
       user.convertToMap(),
@@ -40,36 +44,38 @@ class DatabaseHelper {
     );
   }
 
-  // READ ALL (Fetch)
   Future<List<UserModel>> getAllUsers() async {
-    Database db = await getDatabaseConnection();
-    List<Map<String, dynamic>> rawDataList = await db.query('users');
+    final db = await getDatabaseConnection();
+    final usersData = await db.query('users');
 
-    List<UserModel> userObjectsList = [];
-    for (var mapItem in rawDataList) {
-      userObjectsList.add(UserModel.convertFromMap(mapItem));
-    }
-    return userObjectsList;
+    return usersData.map((user) {
+      return UserModel.convertFromMap(user);
+    }).toList();
   }
 
-  // READ SINGLE (Login Authentication)
-  Future<UserModel?> checkLoginCredentials(String email, String password) async {
-    Database db = await getDatabaseConnection();
-    List<Map<String, dynamic>> matchingRows = await db.query(
+  Future<UserModel?> checkLoginCredentials(
+      String email,
+      String password,
+      ) async {
+    final db = await getDatabaseConnection();
+
+    final userData = await db.query(
       'users',
       where: 'email = ? AND password = ?',
       whereArgs: [email, password],
     );
 
-    if (matchingRows.isNotEmpty) {
-      return UserModel.convertFromMap(matchingRows.first);
+    if (userData.isNotEmpty) {
+      return UserModel.convertFromMap(userData.first);
     }
+
     return null;
   }
 
-  // UPDATE
+
   Future<void> updateUserRecord(UserModel user) async {
-    Database db = await getDatabaseConnection();
+    final db = await getDatabaseConnection();
+
     await db.update(
       'users',
       user.convertToMap(),
@@ -78,9 +84,9 @@ class DatabaseHelper {
     );
   }
 
-  // DELETE
   Future<void> deleteUserRecord(String id) async {
-    Database db = await getDatabaseConnection();
+    final db = await getDatabaseConnection();
+
     await db.delete(
       'users',
       where: 'id = ?',
