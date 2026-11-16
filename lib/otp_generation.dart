@@ -1,11 +1,24 @@
 import 'package:otp/otp.dart';
 
 class Otpgeneration {
-  static String getCurrentCode() => OTP.generateTOTPCodeString(
-    'JBSWY3DPEHPK3PXP',
-    DateTime.now().millisecondsSinceEpoch,
-    isGoogle: true,
-  );
+  static String secretKey = 'JBSWY3DPEHPK3PXP';
 
-  static bool verifyCode(String code) => getCurrentCode() == code.trim();
+  static String getCurrentCode() {
+    int currentTime = DateTime.now().millisecondsSinceEpoch;
+    String otpCode = OTP.generateTOTPCodeString(
+      secretKey,
+      currentTime,
+      isGoogle: true,
+    );
+    return otpCode;
+  }
+
+  static bool verifyCode(String enteredCode) {
+    String currentOtp = getCurrentCode();
+    if (currentOtp == enteredCode.trim()) {
+      return true;
+    } else {
+      return false;
+    }
+  }
 }

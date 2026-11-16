@@ -25,7 +25,8 @@ class DetailsScreen extends StatelessWidget {
           ],
         ),
         actions: [
-          TextButton(onPressed: () => Navigator.pop(dialogContext), child: const Text("Cancel")),
+          TextButton(onPressed: () => Navigator.pop(dialogContext),
+              child: const Text("Cancel")),
           ElevatedButton(
             onPressed: () async {
               final updatedUserData = UserModel(

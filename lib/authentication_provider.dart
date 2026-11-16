@@ -28,21 +28,20 @@ class AuthProvider with ChangeNotifier {
     alertMessage = '';
     notifyListeners();
 
-    UserModel? matchedUser = await dbHelper
-        .checkLoginCredentials(
-        inputEmail,
-        inputPassword);
+    UserModel? matchedUser = await dbHelper.checkLoginCredentials(
+      inputEmail,
+      inputPassword,
+    );
 
     isLoggingIn = false;
 
     if (matchedUser != null) {
       notifyListeners();
       return true;
+    } else {
+      alertMessage = 'Wrong email or password';
+      notifyListeners();
+      return false;
     }
-
-    alertMessage =
-    'Wrong email or password';
-    notifyListeners();
-    return false;
   }
 }

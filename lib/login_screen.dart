@@ -71,7 +71,7 @@ class LoginScreen extends StatelessWidget {
                       if (isUserValid && context.mounted) {
                         Navigator.pushReplacement(
                           context,
-                          MaterialPageRoute(builder: (_) => const OtpScreen()),
+                          MaterialPageRoute(builder: (_) => OtpScreen()),
                         );
                       }
                     }
