@@ -4,8 +4,6 @@ import 'otp_generation.dart';
 import 'details_screen.dart';
 
 class OtpScreen extends StatefulWidget {
-  const OtpScreen({super.key});
-
   @override
   State<OtpScreen> createState() => OtpScreenState();
 }
@@ -13,7 +11,7 @@ class OtpScreen extends StatefulWidget {
 class OtpScreenState extends State<OtpScreen> {
   final formKey = GlobalKey<FormState>();
   final otpController = TextEditingController();
-  String errorMessage = '';
+  String alertMessage = '';
   String generatedOtp = '';
 
   @override
@@ -22,21 +20,27 @@ class OtpScreenState extends State<OtpScreen> {
     generateNewOtp();
   }
 
-  void generateNewOtp() => setState(() {
-    generatedOtp = Otpgeneration.getCurrentCode();
-    errorMessage = '';
-  });
+  void generateNewOtp() {
+    setState(() {
+      generatedOtp = Otpgeneration.getCurrentCode();
+      alertMessage = '';
+    });
+  }
 
   void checkOtp() {
-    if (!formKey.currentState!.validate()) return;
+    if (formKey.currentState!.validate()) {
+      bool isOtpValid = Otpgeneration.verifyCode(otpController.text);
 
-    if (Otpgeneration.verifyCode(otpController.text)) {
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (_) => const DetailsScreen()),
-      );
-    } else {
-      setState(() => errorMessage = 'OTP expired.');
+      if (isOtpValid) {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => DetailsScreen()),
+        );
+      } else {
+        setState(() {
+          alertMessage = 'Invalid or expired OTP';
+        });
+      }
     }
   }
 
@@ -53,16 +57,18 @@ class OtpScreenState extends State<OtpScreen> {
         backgroundColor: Colors.blueAccent,
         foregroundColor: Colors.white,
         centerTitle: true,
-        title: const Text("OTP Verification"),
+        title: Text("OTP Verification"),
       ),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.all(20),
+        padding: EdgeInsets.all(20),
         child: Form(
           key: formKey,
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
+              SizedBox(height: 20),
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
+                padding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
                 decoration: BoxDecoration(
                   color: Colors.blue.shade50,
                   borderRadius: BorderRadius.circular(10),
@@ -73,62 +79,70 @@ class OtpScreenState extends State<OtpScreen> {
                   children: [
                     Text(
                       "Your OTP: $generatedOtp",
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
                         color: Colors.blueAccent,
                       ),
                     ),
                     IconButton(
-                      icon: const Icon(Icons.refresh, color: Colors.blueAccent),
-                      onPressed: generateNewOtp,
+                      icon: Icon(Icons.refresh, color: Colors.blueAccent),
+                      onPressed: () {
+                        generateNewOtp();
+                      },
                     ),
                   ],
                 ),
               ),
-              const SizedBox(height: 25),
+              SizedBox(height: 20),
               TextFormField(
                 controller: otpController,
                 keyboardType: TextInputType.number,
                 maxLength: 6,
-                decoration: const InputDecoration(
+                decoration: InputDecoration(
                   labelText: "Enter 6-Digit OTP",
                   border: OutlineInputBorder(),
                 ),
-                validator: (v) =>
-                (v == null || v.trim().length != 6) ? 'Enter 6 digits' : null,
+                validator: (value) {
+                  if (value == null || value.trim().length != 6) {
+                    return 'Please enter 6 digits';
+                  }
+                  return null;
+                },
               ),
-              if (errorMessage.isNotEmpty)
+              if (alertMessage.isNotEmpty)
                 Padding(
-                  padding: const EdgeInsets.only(top: 10),
+                  padding: EdgeInsets.only(top: 10),
                   child: Text(
-                    errorMessage,
-                    style: const TextStyle(
+                    alertMessage,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
                       color: Colors.red,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
                 ),
-              const SizedBox(height: 25),
-              SizedBox(
-                width: double.infinity,
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.blueAccent,
-                    foregroundColor: Colors.white,
-                    padding: const EdgeInsets.symmetric(vertical: 15),
-                  ),
-                  onPressed: checkOtp,
-                  child: const Text("Verify OTP", style: TextStyle(fontSize: 18)),
+              SizedBox(height: 25),
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.blueAccent,
+                  foregroundColor: Colors.white,
+                  padding: EdgeInsets.symmetric(vertical: 15),
                 ),
+                onPressed: () {
+                  checkOtp();
+                },
+                child: Text("Verify OTP", style: TextStyle(fontSize: 18)),
               ),
-              const SizedBox(height: 15),
+              SizedBox(height: 15),
               TextButton(
-                onPressed: () => Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(builder: (_) => LoginScreen()),
-                ),
-                child: const Text("Back"),
+                onPressed: () {
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(builder: (context) => LoginScreen()),
+                  );
+                },
+                child: Text("Back to Login"),
               ),
             ],
           ),

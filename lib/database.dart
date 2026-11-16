@@ -6,7 +6,13 @@ class DatabaseHelper {
   static Database? database;
 
   Future<Database> getDatabaseConnection() async {
+<<<<<<< HEAD
     if (database != null) return database!;
+=======
+    if (database != null) {
+      return database!;
+    }
+>>>>>>> 0cb7888 (updated code)
 
     final databasePath = await getDatabasesPath();
     final databaseFile = join(databasePath, 'user_database.db');
@@ -37,7 +43,10 @@ class DatabaseHelper {
     );
   }
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 0cb7888 (updated code)
   Future<List<UserModel>> getAllUsers() async {
     final db = await getDatabaseConnection();
     final usersData = await db.query('users');
@@ -46,8 +55,8 @@ class DatabaseHelper {
 
   Future<UserModel?> checkLoginCredentials(String email, String password) async {
     final db = await getDatabaseConnection();
-    final userData = await db.query
-      ('users',
+    final userData = await db.query(
+      'users',
       where: 'email = ? AND password = ?',
       whereArgs: [email, password],
     );

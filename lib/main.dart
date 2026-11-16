@@ -6,22 +6,21 @@ import 'login_screen.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  runApp(const MyDatabaseApp());
+  runApp(MyDatabaseApp());
 }
 
 class MyDatabaseApp extends StatelessWidget {
-  const MyDatabaseApp({super.key});
-
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (context) => AuthProvider()),
-        ChangeNotifierProvider(create: (context) =>
-        RegistrationProvider()
-          ..fetchAndRefreshUsers()),
+        ChangeNotifierProvider(create: (context) {
+          RegistrationProvider provider = RegistrationProvider();
+          provider.fetchAndRefreshUsers();
+          return provider;
+        }),
       ],
-
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'Registration App',
