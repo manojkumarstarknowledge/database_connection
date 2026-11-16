@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'auth_provider.dart';
+import 'authentication_provider.dart';
 import 'registration_provider.dart';
 import 'login_screen.dart';
 
@@ -17,12 +17,14 @@ class MyDatabaseApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (context) => AuthProvider()),
-        ChangeNotifierProvider(create: (context) => RegistrationProvider()..fetchAndRefreshUsers()),
+        ChangeNotifierProvider(create: (context) =>
+        RegistrationProvider()
+          ..fetchAndRefreshUsers()),
       ],
+
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        title: 'Persistent Registration App',
-        theme: ThemeData(primarySwatch: Colors.blue),
+        title: 'Registration App',
         home: LoginScreen(),
       ),
     );

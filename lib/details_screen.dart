@@ -18,8 +18,10 @@ class DetailsScreen extends StatelessWidget {
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            TextField(controller: nameInputController, decoration: const InputDecoration(labelText: "Full Name")),
-            TextField(controller: emailInputController, decoration: const InputDecoration(labelText: "Email Address")),
+            TextField(controller: nameInputController,
+                decoration: const InputDecoration(labelText: "Full Name")),
+            TextField(controller: emailInputController,
+                decoration: const InputDecoration(labelText: "Email Address")),
           ],
         ),
         actions: [

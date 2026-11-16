@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'database_helper.dart';
+import 'database.dart';
 import 'user_model.dart';
 
 class RegistrationProvider with ChangeNotifier {

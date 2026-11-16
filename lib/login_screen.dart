@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'auth_provider.dart';
-import 'details_screen.dart';
+import 'authentication_provider.dart';
+import 'otp_screen.dart';
 import 'register_screen.dart';
 
 class LoginScreen extends StatelessWidget {
@@ -17,13 +17,16 @@ class LoginScreen extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: Colors.blueAccent,
         foregroundColor: Colors.white,
-        title: const Text("Login Screen"),
+        title: const Align(
+          alignment: Alignment.center,
+          child: Text("Login Screen"),
+        ),
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(20),
         child: Form(
           key: formKey,
-          child: Column (
+          child: Column(
             children: [
               const SizedBox(height: 20),
               TextFormField(
@@ -68,7 +71,7 @@ class LoginScreen extends StatelessWidget {
                       if (isUserValid && context.mounted) {
                         Navigator.pushReplacement(
                           context,
-                          MaterialPageRoute(builder: (_) => const DetailsScreen()),
+                          MaterialPageRoute(builder: (_) => const OtpScreen()),
                         );
                       }
                     }

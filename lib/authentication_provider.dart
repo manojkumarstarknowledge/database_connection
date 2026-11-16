@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'database_helper.dart';
+import 'database.dart';
 import 'user_model.dart';
 
 class AuthProvider with ChangeNotifier {
@@ -7,6 +7,7 @@ class AuthProvider with ChangeNotifier {
 
   String inputEmail = '';
   String inputPassword = '';
+
   String alertMessage = '';
   bool isLoggingIn = false;
 
@@ -22,22 +23,26 @@ class AuthProvider with ChangeNotifier {
     notifyListeners();
   }
 
-
   Future<bool> verifyLogin() async {
     isLoggingIn = true;
     alertMessage = '';
     notifyListeners();
 
-    UserModel? matchedUser = await dbHelper.checkLoginCredentials(inputEmail, inputPassword);
+    UserModel? matchedUser = await dbHelper
+        .checkLoginCredentials(
+        inputEmail,
+        inputPassword);
 
     isLoggingIn = false;
+
     if (matchedUser != null) {
       notifyListeners();
       return true;
-    } else {
-      alertMessage = 'Wrong email or password, please try again.';
-      notifyListeners();
-      return false;
     }
+
+    alertMessage =
+    'Wrong email or password';
+    notifyListeners();
+    return false;
   }
 }
