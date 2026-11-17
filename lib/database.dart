@@ -9,10 +9,7 @@ class DatabaseHelper {
     if (database != null) {
       return database!;
     }
-<<<<<<< HEAD
 
-=======
->>>>>>> temp-branch
     final databasePath = await getDatabasesPath();
     final databaseFile = join(databasePath, 'user_database.db');
 
