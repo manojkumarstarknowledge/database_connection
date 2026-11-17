@@ -86,14 +86,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "6.0.0"
-  flutter_otp_kit:
-    dependency: "direct main"
-    description:
-      name: flutter_otp_kit
-      sha256: ed1f910197faa971e2cf63e3dfd2ade0ce1116acfebecd2e2190cd6c198c13b6
-      url: "https://pub.dev"
-    source: hosted
-    version: "3.1.1"
   flutter_test:
     dependency: "direct dev"
     description: flutter

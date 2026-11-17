@@ -8,7 +8,7 @@ class Otpgeneration {
     String otpCode = OTP.generateTOTPCodeString(
       secretKey,
       currentTime,
-      isGoogle: true,
+      length: 4,
     );
     return otpCode;
   }

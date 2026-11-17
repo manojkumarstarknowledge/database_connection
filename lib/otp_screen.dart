@@ -13,7 +13,6 @@ class OtpScreenState extends State<OtpScreen> {
   final otpController = TextEditingController();
   String alertMessage = '';
   String generatedOtp = '';
-
   @override
   void initState() {
     super.initState();
@@ -98,14 +97,14 @@ class OtpScreenState extends State<OtpScreen> {
               TextFormField(
                 controller: otpController,
                 keyboardType: TextInputType.number,
-                maxLength: 6,
+                maxLength: 4,
                 decoration: InputDecoration(
-                  labelText: "Enter 6-Digit OTP",
+                  labelText: "Enter 4-Digit OTP",
                   border: OutlineInputBorder(),
                 ),
                 validator: (value) {
-                  if (value == null || value.trim().length != 6) {
-                    return 'Please enter 6 digits';
+                  if (value == null || value.trim().length != 4) {
+                    return 'Please enter 4 digits';
                   }
                   return null;
                 },

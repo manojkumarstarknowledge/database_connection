@@ -5,7 +5,6 @@ import 'registration_provider.dart';
 import 'login_screen.dart';
 
 void main() {
-  WidgetsFlutterBinding.ensureInitialized();
   runApp(MyDatabaseApp());
 }
 
