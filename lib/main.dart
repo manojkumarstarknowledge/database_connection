@@ -5,7 +5,10 @@ import 'registration_provider.dart';
 import 'login_screen.dart';
 
 void main() {
+<<<<<<< HEAD
   WidgetsFlutterBinding.ensureInitialized();
+=======
+>>>>>>> temp-branch
   runApp(MyDatabaseApp());
 }
 
