@@ -12,7 +12,6 @@ class LoginScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final authProvider = context.watch<AuthProvider>();
-
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.blueAccent,
@@ -34,7 +33,10 @@ class LoginScreen extends StatelessWidget {
                   labelText: "Email Address",
                   border: OutlineInputBorder(),
                 ),
-                validator: (value) => (value == null || value.isEmpty) ? 'Please enter your email' : null,
+                validator: (value) =>
+                (value == null || value.isEmpty)
+                    ? 'Please enter your email'
+                    : null,
                 onChanged: authProvider.updateEmail,
               ),
               const SizedBox(height: 15),
@@ -44,14 +46,19 @@ class LoginScreen extends StatelessWidget {
                   labelText: "Password",
                   border: OutlineInputBorder(),
                 ),
-                validator: (value) => (value == null || value.isEmpty) ? 'Please enter your password' : null,
+                validator: (value) =>
+                (value == null || value.isEmpty)
+                    ? 'Please enter your password'
+                    : null,
                 onChanged: authProvider.updatePassword,
               ),
               if (authProvider.alertMessage.isNotEmpty) ...[
                 const SizedBox(height: 15),
                 Text(
                   authProvider.alertMessage,
-                  style: const TextStyle(color: Colors.red, fontWeight: FontWeight.bold),
+                  style: const TextStyle(
+                      color: Colors.red,
+                      fontWeight: FontWeight.bold),
                 ),
               ],
               const SizedBox(height: 30),
@@ -76,7 +83,9 @@ class LoginScreen extends StatelessWidget {
                       }
                     }
                   },
-                  child: const Text("Login", style: TextStyle(fontSize: 18)),
+                  child: const Text("Login",
+                      style: TextStyle(
+                          fontSize: 18)),
                 ),
               ),
               const SizedBox(height: 15),

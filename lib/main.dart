@@ -6,10 +6,10 @@ import 'login_screen.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  runApp(MyDatabaseApp());
+  runApp (databaseApp());
 }
 
-class MyDatabaseApp extends StatelessWidget {
+class databaseApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiProvider(

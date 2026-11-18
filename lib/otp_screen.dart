@@ -4,42 +4,42 @@ import 'otp_generation.dart';
 import 'details_screen.dart';
 
 class OtpScreen extends StatefulWidget {
+  const OtpScreen({super.key});
+
   @override
-  State<OtpScreen> createState() => OtpScreenState();
+  State<OtpScreen>
+  createState() => OtpScreenState();
 }
 
 class OtpScreenState extends State<OtpScreen> {
   final formKey = GlobalKey<FormState>();
   final otpController = TextEditingController();
-  String alertMessage = '';
-  String generatedOtp = '';
+
+  Otpgeneration otpHelper = Otpgeneration();
+
+  String otp = '';
+  String message = '';
+
   @override
   void initState() {
     super.initState();
-    generateNewOtp();
+    otp = otpHelper.getCurrentCode();
   }
 
-  void generateNewOtp() {
-    setState(() {
-      generatedOtp = Otpgeneration.getCurrentCode();
-      alertMessage = '';
-    });
-  }
+  void verifyOtp() {
+    if (!formKey.currentState!.validate()) return;
 
-  void checkOtp() {
-    if (formKey.currentState!.validate()) {
-      bool isOtpValid = Otpgeneration.verifyCode(otpController.text);
-
-      if (isOtpValid) {
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => DetailsScreen()),
-        );
-      } else {
-        setState(() {
-          alertMessage = 'Invalid or expired OTP';
-        });
-      }
+    if (otpHelper.verifyCode(otpController.text)) {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) => DetailsScreen(),
+        ),
+      );
+    } else {
+      setState(() {
+        message = "Invalid OTP";
+      });
     }
   }
 
@@ -53,95 +53,79 @@ class OtpScreenState extends State<OtpScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.blueAccent,
-        foregroundColor: Colors.white,
+        title: const Text("OTP Verification"),
         centerTitle: true,
-        title: Text("OTP Verification"),
+        backgroundColor: Colors.blue,
+        foregroundColor: Colors.white,
       ),
-      body: SingleChildScrollView(
-        padding: EdgeInsets.all(20),
+      body: Padding(
+        padding: const EdgeInsets.all(20),
         child: Form(
           key: formKey,
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              SizedBox(height: 20),
-              Container(
-                padding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-                decoration: BoxDecoration(
-                  color: Colors.blue.shade50,
-                  borderRadius: BorderRadius.circular(10),
-                  border: Border.all(color: Colors.blueAccent),
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      "Your OTP: $generatedOtp",
-                      style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.blueAccent,
-                      ),
-                    ),
-                    IconButton(
-                      icon: Icon(Icons.refresh, color: Colors.blueAccent),
-                      onPressed: () {
-                        generateNewOtp();
-                      },
-                    ),
-                  ],
+
+              Text(
+                "OTP : $otp",
+                style: const TextStyle(
+                  fontSize: 22,
+                  fontWeight: FontWeight.bold,
                 ),
               ),
-              SizedBox(height: 20),
+
+              IconButton(
+                onPressed: () {
+                  setState(() {
+                    otp = otpHelper.getCurrentCode();
+                    message = '';
+                  });
+                },
+                icon: const Icon(Icons.refresh),
+              ),
+
+              const SizedBox(height: 20),
+
               TextFormField(
                 controller: otpController,
-                keyboardType: TextInputType.number,
                 maxLength: 4,
-                decoration: InputDecoration(
-                  labelText: "Enter 4-Digit OTP",
+                keyboardType: TextInputType.number,
+                decoration: const InputDecoration(
+                  labelText: "Enter OTP",
                   border: OutlineInputBorder(),
                 ),
                 validator: (value) {
-                  if (value == null || value.trim().length != 4) {
-                    return 'Please enter 4 digits';
+                  if (value == null || value.length != 4) {
+                    return "Enter 4 digit OTP";
                   }
                   return null;
                 },
               ),
-              if (alertMessage.isNotEmpty)
-                Padding(
-                  padding: EdgeInsets.only(top: 10),
-                  child: Text(
-                    alertMessage,
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      color: Colors.red,
-                      fontWeight: FontWeight.bold,
-                    ),
+
+              if (message.isNotEmpty)
+                Text(
+                  message,
+                  style: const TextStyle(
+                    color: Colors.red,
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
-              SizedBox(height: 25),
+
+              const SizedBox(height: 20),
+
               ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.blueAccent,
-                  foregroundColor: Colors.white,
-                  padding: EdgeInsets.symmetric(vertical: 15),
-                ),
-                onPressed: () {
-                  checkOtp();
-                },
-                child: Text("Verify OTP", style: TextStyle(fontSize: 18)),
+                onPressed: verifyOtp,
+                child: const Text("Verify OTP"),
               ),
-              SizedBox(height: 15),
               TextButton(
                 onPressed: () {
                   Navigator.pushReplacement(
                     context,
-                    MaterialPageRoute(builder: (context) => LoginScreen()),
+                    MaterialPageRoute(
+                      builder: (context) => LoginScreen(),
+                    ),
                   );
                 },
-                child: Text("Back to Login"),
+                child: const Text("Back to Login"),
               ),
             ],
           ),

@@ -17,14 +17,13 @@ class RegistrationProvider with ChangeNotifier {
                 notifyListeners();
                  }
 
-
    Future<void> createNewUser (UserModel user) async {
     await dbHelper.insertUser(user);
     await fetchAndRefreshUsers();
      }
 
 
-  Future<void> modifyUser(UserModel user) async {
+     Future<void> modifyUser(UserModel user) async {
     await dbHelper.updateUserRecord(user);
     await fetchAndRefreshUsers();
   }

@@ -45,7 +45,8 @@ class DatabaseHelper {
     return usersData.map((user) => UserModel.convertFromMap(user)).toList();
   }
 
-  Future<UserModel?> checkLoginCredentials(String email, String password) async {
+  Future<UserModel?>
+  checkLoginCredentials(String email, String password) async {
     final db = await getDatabaseConnection();
     final userData = await db.query(
       'users',

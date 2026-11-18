@@ -7,9 +7,16 @@ import 'login_screen.dart';
 class DetailsScreen extends StatelessWidget {
   const DetailsScreen({super.key});
 
-  void openUpdateDialog(BuildContext context, UserModel user) {
-    final nameInputController = TextEditingController(text: user.name);
-    final emailInputController = TextEditingController(text: user.email);
+  void openUpdateDialog(
+      BuildContext context, UserModel user) {
+    final nameInputController =
+       TextEditingController(
+             text: user.name);
+
+
+    final emailInputController =
+    TextEditingController(
+                       text: user.email);
 
     showDialog(
       context: context,
@@ -18,15 +25,26 @@ class DetailsScreen extends StatelessWidget {
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            TextField(controller: nameInputController,
-                decoration: const InputDecoration(labelText: "Full Name")),
-            TextField(controller: emailInputController,
-                decoration: const InputDecoration(labelText: "Email Address")),
+
+            TextField(
+                controller: nameInputController,
+                decoration: const InputDecoration(
+                    labelText: "Full Name")),
+
+
+            TextField(
+                controller: emailInputController,
+                decoration: const InputDecoration(
+                    labelText: "Email Address")),
           ],
         ),
         actions: [
-          TextButton(onPressed: () => Navigator.pop(dialogContext),
+          TextButton(
+              onPressed: () => Navigator.pop(
+                  dialogContext),
               child: const Text("Cancel")),
+
+
           ElevatedButton(
             onPressed: () async {
               final updatedUserData = UserModel(
@@ -36,7 +54,8 @@ class DetailsScreen extends StatelessWidget {
                 password: user.password,
               );
               await context.read<RegistrationProvider>().modifyUser(updatedUserData);
-              if (dialogContext.mounted) Navigator.pop(dialogContext);
+              if (dialogContext.mounted)
+                Navigator.pop(dialogContext);
             },
             child: const Text("Save Changes"),
           ),
@@ -54,37 +73,60 @@ class DetailsScreen extends StatelessWidget {
         backgroundColor: Colors.blueAccent,
         title: const Text("Database List"),
         actions: [
+
           IconButton(
             icon: const Icon(Icons.logout),
             onPressed: () {
-              Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => LoginScreen()));
+              Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                      builder: (_) => LoginScreen()));
             },
           )
         ],
       ),
+
+
       body: regProvider.isPageLoading
-          ? const Center(child: CircularProgressIndicator())
+          ? const Center(
+          child: CircularProgressIndicator())
           : regProvider.savedUsersList.isEmpty
-          ? const Center(child: Text("No data saved in SQLite database yet.", style: TextStyle(fontSize: 16, color: Colors.grey)))
+          ? const Center(child: Text("No data saved in SQLite database yet.",
+          style: TextStyle(
+              fontSize: 16,
+              color: Colors.grey)))
           : ListView.builder(
+
         itemCount: regProvider.savedUsersList.length,
         itemBuilder: (context, index) {
           final user = regProvider.savedUsersList[index];
           return Card(
-            margin: const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
-            elevation: 3,
+            margin: const EdgeInsets.symmetric(
+                horizontal: 15,
+                vertical: 8),
+                     elevation: 3,
+
             child: ListTile(
-              title: Text(user.name, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+              title: Text(user.name,
+                  style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16)),
               subtitle: Text(user.email),
               trailing: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
+
                   IconButton(
-                    icon: const Icon(Icons.edit, color: Colors.blue),
-                    onPressed: () => openUpdateDialog(context, user),
+                    icon: const Icon(
+                        Icons.edit,
+                        color: Colors.blue),
+                    onPressed: () => openUpdateDialog(
+                        context,
+                        user),
                   ),
                   IconButton(
-                    icon: const Icon(Icons.delete, color: Colors.red),
+                    icon: const Icon(Icons.delete,
+                        color: Colors.red),
                     onPressed: () => regProvider.deleteUser(user.id),
                   ),
                 ],
